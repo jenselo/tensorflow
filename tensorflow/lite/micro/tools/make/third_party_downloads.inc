@@ -31,6 +31,9 @@ TSIM_MD5 := "afa0095d3ed989a949e1467f94e41d2f"
 CMSIS_URL := "https://github.com/ARM-software/CMSIS_5/archive/8a4db53f69da06e97565fe2f2e8926d193a5759d.zip"
 CMSIS_MD5 := "e9864fb71b65adc4f7d92a9dea6e1aab"
 
+EVENTRECORDER_URL := "https://url_to_eventrecorder_code.example/placeholder_name.pack"
+EVENTRECORDER_MD5 := "000000000000000000000"
+
 AM_SDK_URL := "http://s3.asia.ambiqmicro.com/downloads/AmbiqSuite-Rel2.2.0.zip"
 AM_SDK_MD5 := "7605fa2d4d97e6bb7a1190c92b66b597"
 AM_SDK_DEST := AmbiqSuite-Rel2.2.0

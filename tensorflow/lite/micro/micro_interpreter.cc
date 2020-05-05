@@ -21,6 +21,8 @@ limitations under the License.
 #include "tensorflow/lite/micro/micro_allocator.h"
 #include "tensorflow/lite/micro/micro_optional_debug_tools.h"
 
+#include "tensorflow/lite/micro/profiling_eventrecorder.h"
+
 namespace tflite {
 namespace {
 
@@ -237,12 +239,16 @@ TfLiteStatus MicroInterpreter::Invoke() {
     TF_LITE_ENSURE_OK(&context_, AllocateTensors());
   }
 
+  PROFILER_INIT();
+
   for (size_t i = 0; i < operators_->size(); ++i) {
     auto* node = &(node_and_registrations_[i].node);
     auto* registration = node_and_registrations_[i].registration;
 
     if (registration->invoke) {
+      PROFILER_INVOKE_START (i);
       TfLiteStatus invoke_status = registration->invoke(&context_, node);
+      PROFILER_INVOKE_STOP (i);
       if (invoke_status == kTfLiteError) {
         TF_LITE_REPORT_ERROR(
             error_reporter_,
