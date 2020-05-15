@@ -649,6 +649,12 @@ typedef struct TfLiteContext {
   TfLiteStatus (*PreviewDelegatePartitioning)(
       struct TfLiteContext* context, const TfLiteIntArray* nodes_to_replace,
       TfLiteDelegateParams** partition_params_array, int* num_partitions);
+
+  // Callback to log event
+  // NOTE: The reason why data is a void* and not a struct Event* is to not
+  // have to include tensorflow/lite/micro/event_logger/event_logger.h in this
+  // file.
+  void (*LogEvent) (void *data, size_t data_size);
 } TfLiteContext;
 
 typedef struct TfLiteRegistration {

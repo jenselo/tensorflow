@@ -26,6 +26,7 @@ limitations under the License.
 #include "tensorflow/lite/micro/micro_allocator.h"
 #include "tensorflow/lite/schema/schema_generated.h"
 #include "tensorflow/lite/type_to_tflitetype.h"
+#include "tensorflow/lite/micro/event_logger/event_logger.h"
 
 namespace tflite {
 
@@ -150,6 +151,10 @@ class MicroInterpreter {
   // utilize the space. If it's not the case, the optimial arena size would be
   // arena_used_bytes() + 16.
   size_t arena_used_bytes() const { return allocator_.used_bytes(); }
+
+  void registerEventLogCallback(LogEvent logevent_func) {
+    context_.LogEvent = logevent_func;
+  }
 
  private:
   void CorrectTensorEndianness(TfLiteTensor* tensorCorr);

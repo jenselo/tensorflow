@@ -98,6 +98,8 @@ MICRO_LITE_EXAMPLE_TESTS := $(shell find tensorflow/lite/micro/examples/ -name M
 
 MICRO_LITE_BENCHMARKS := $(wildcard tensorflow/lite/micro/benchmarks/Makefile.inc)
 
+MICRO_LITE_EVENT_LOGGER := $(wildcard tensorflow/lite/micro/event_logger/Makefile.inc)
+
 MICROLITE_TEST_SRCS := \
 $(wildcard tensorflow/lite/micro/*test.cc) \
 $(wildcard tensorflow/lite/micro/kernels/*test.cc) \
@@ -130,6 +132,7 @@ MICROLITE_CC_HDRS := \
 $(wildcard tensorflow/lite/micro/*.h) \
 $(wildcard tensorflow/lite/micro/kernels/*.h) \
 $(wildcard tensorflow/lite/micro/memory_planner/*.h) \
+$(wildcard tensorflow/lite/micro/event_logger/*.h) \
 LICENSE \
 tensorflow/core/public/version.h \
 tensorflow/lite/c/builtin_op_data.h \
@@ -274,6 +277,9 @@ include $(MICRO_LITE_EXAMPLE_TESTS)
 
 # Load the benchmarks.
 include $(MICRO_LITE_BENCHMARKS)
+
+# Load the event logger
+include $(MICRO_LITE_EVENT_LOGGER)
 
 # Create rules for downloading third-party dependencies.
 THIRD_PARTY_TARGETS :=

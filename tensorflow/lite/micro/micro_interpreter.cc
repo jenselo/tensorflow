@@ -24,6 +24,7 @@ limitations under the License.
 #include "tensorflow/lite/core/api/op_resolver.h"
 #include "tensorflow/lite/core/api/tensor_utils.h"
 #include "tensorflow/lite/micro/micro_allocator.h"
+#include "tensorflow/lite/micro/event_logger/event_logger.h"
 
 namespace tflite {
 namespace {
@@ -244,7 +245,25 @@ TfLiteStatus MicroInterpreter::Invoke() {
     auto* registration = node_and_registrations_[i].registration;
 
     if (registration->invoke) {
+
+      struct EventLogger_Event event = {
+        registration->builtin_code, // Operator id
+        i, // layer
+        EventID_START, // Type of event
+        nullptr, // eventdata
+        0, // eventdata_size
+      };
+
+      if (context_.LogEvent != NULL) {
+        context_.LogEvent((void*)&event, sizeof(event));
+      }
       TfLiteStatus invoke_status = registration->invoke(&context_, node);
+
+      event.event_id = EventID_STOP;
+      if (context_.LogEvent != NULL) {
+        context_.LogEvent((void*)&event, sizeof(event));
+      }
+
       if (invoke_status == kTfLiteError) {
         TF_LITE_REPORT_ERROR(
             error_reporter_,

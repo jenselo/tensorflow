@@ -21,11 +21,28 @@ limitations under the License.
 #include "tensorflow/lite/schema/schema_generated.h"
 #include "tensorflow/lite/version.h"
 
+#include "tensorflow/lite/micro/micro_time.h"
+#include "tensorflow/lite/micro/event_logger/event_logger.h"
+
 #ifndef TENSOR_ARENA_SIZE
 #define TENSOR_ARENA_SIZE (1024)
 #endif
 
 uint8_t tensor_arena[TENSOR_ARENA_SIZE];
+
+void NetworkTesterEventLog(void* data, size_t data_size) {
+  (void)data_size;
+  struct tflite::EventLogger_Event event;
+  memcpy(&event, data, sizeof(event));
+  const char* event_type = GetEventNameFromId(event.event_id);
+  const char* opname = tflite::EnumNameBuiltinOperator(tflite::BuiltinOperator(event.op_id));
+
+  printf("Timestamp: %.3f\n", tflite::GetCurrentTimeTicks() / (tflite::ticks_per_second() / 1000.0));
+  printf("Op: %s\n", opname);
+  printf("Layer: %d\n", event.layer);
+  printf("Event: %s\n", event_type);
+  printf("\n");
+}
 
 #ifdef NUM_BYTES_TO_PRINT
 inline void print_output_data(TfLiteTensor* output) {
@@ -70,6 +87,7 @@ TF_LITE_MICRO_TEST(TestInvoke) {
 
   tflite::MicroInterpreter interpreter(model, resolver, tensor_arena,
                                        TENSOR_ARENA_SIZE, error_reporter);
+  interpreter.registerEventLogCallback(&NetworkTesterEventLog);
 
   TfLiteStatus allocate_status = interpreter.AllocateTensors();
   if (allocate_status != kTfLiteOk) {
