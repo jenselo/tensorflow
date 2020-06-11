@@ -54,6 +54,7 @@ ifneq ($(filter CMSIS,$(ALL_TAGS)),)
     third_party/cmsis/CMSIS/Core/Include/core_cm3.h \
     third_party/cmsis/CMSIS/DSP/Include/arm_common_tables.h \
     third_party/cmsis/CMSIS/DSP/Include/arm_const_structs.h \
-    third_party/cmsis/CMSIS/DSP/Include/arm_math.h
+    third_party/cmsis/CMSIS/DSP/Include/arm_math.h \
+    third_party/cmsis/CMSIS/DSP/Include/arm_math_f16.h
 
 endif
