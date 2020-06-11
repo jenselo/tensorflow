@@ -17,6 +17,8 @@ ifeq ($(TARGET),$(filter $(TARGET),\
   $(eval $(call add_third_party_download,$(GCC_EMBEDDED_URL),$(GCC_EMBEDDED_MD5),gcc_embedded,))
   $(eval $(call add_third_party_download,$(CMSIS_URL),$(CMSIS_MD5),cmsis,))
   $(eval $(call add_third_party_download,$(AM_SDK_URL),$(AM_SDK_MD5),$(AM_SDK_DEST),patch_am_sdk))
+  $(eval $(call add_third_party_download,$(AP3_URL),$(AP3_MD5),apollo3_ext,))
+  $(eval $(call add_third_party_download,$(CUST_CMSIS_URL),$(CUST_CMSIS_MD5),CMSIS_ext,))
 
   ifeq ($(findstring sparkfun,$(TARGET)), sparkfun)
     $(eval $(call add_third_party_download,$(SF_BSPS_URL),$(SF_BSPS_MD5),$(AM_SDK_DEST)/$(SF_BSPS_DEST),))
@@ -134,6 +136,11 @@ $(MAKEFILE_DIR)/downloads/$(AM_SDK_DEST)/$(SF_BSPS_DEST): $(MAKEFILE_DIR)/downlo
   $(CMSIS_SRC_DIR)/CommonTables/arm_common_tables.c \
   $(CMSIS_SRC_DIR)/StatisticsFunctions/arm_mean_q15.c \
   $(CMSIS_SRC_DIR)/StatisticsFunctions/arm_max_q7.c
+
+  AP3_EXT_MICRO_DIR := $(MAKEFILE_DIR)/downloads/apollo3_ext
+  AP3_MICRO_DIR := tensorflow/lite/micro/examples/micro_speech/apollo3
+  CMSIS_DIR := tensorflow/lite/micro/examples/micro_speech/CMSIS
+  CMSIS_EXT_DIR := $(MAKEFILE_DIR)/downloads/CMSIS_ext
 
   MICRO_SPEECH_TEST_SRCS += \
     $(AP3_MICRO_DIR)/_main.c
