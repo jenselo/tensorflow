@@ -4,11 +4,14 @@ ifneq ($(filter cmsis-nn,$(ALL_TAGS)),)
         # CMSIS-NN optimizations not supported
     endif
 
-    # Setup CMSIS-NN lib and add required header files to microlite lib INCLUDE
-    THIRD_PARTY_DOWNLOADS += \
-      $(eval $(call add_third_party_download,$(CMSIS_URL),$(CMSIS_MD5),cmsis,patch_cmsis))
 
-    CMSIS_PATH = $(MAKEFILE_DIR)/downloads/cmsis/
+    ifeq ($(CMSIS_PATH),)
+      # Setup CMSIS-NN lib and add required header files to microlite lib INCLUDE
+      THIRD_PARTY_DOWNLOADS += \
+        $(eval $(call add_third_party_download,$(CMSIS_URL),$(CMSIS_MD5),cmsis,patch_cmsis))
+
+      CMSIS_PATH = $(MAKEFILE_DIR)/downloads/cmsis/
+    endif
 
     # List of files generated with:
     # find tensorflow/lite/micro/tools/make/downloads/cmsis/CMSIS/NN/Source/ -iname "*.c"
@@ -97,5 +100,11 @@ ifneq ($(filter cmsis-nn,$(ALL_TAGS)),)
       $(CMSIS_PATH)CMSIS/NN/Include/arm_nn_types.h \
       $(CMSIS_PATH)CMSIS/DSP/Include/arm_math.h \
       $(CMSIS_PATH)CMSIS/DSP/Include/arm_common_tables.h
+
+    INCLUDES += \
+      -I$(CMSIS_PATH) \
+      -I$(CMSIS_PATH)/CMSIS/DSP/Include/ \
+      -I$(CMSIS_PATH)/CMSIS/NN/Include/ \
+      -I$(CMSIS_PATH)/CMSIS/Core/Include/
 
 endif
