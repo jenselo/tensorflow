@@ -404,7 +404,7 @@ command to generate a subfolder containing the required source files in this
 structure:
 
 ```
-make -f tensorflow/lite/micro/tools/make/Makefile TARGET=mbed TAGS="CMSIS disco_f746ng" generate_micro_speech_mbed_project
+make -f tensorflow/lite/micro/tools/make/Makefile TARGET=mbed TAGS="cmsis-nn disco_f746ng" generate_micro_speech_mbed_project
 ```
 
 Running the make command will result in the creation of a new folder:
@@ -429,18 +429,6 @@ Next, tell Mbed to download the dependencies and prepare to build:
 
 ```
 mbed deploy
-```
-
-By default, Mbed will build the project using C++98. However, TensorFlow Lite
-requires C++11. Run the following Python snippet to modify the Mbed
-configuration files so that it uses C++11:
-
-```
-python -c 'import fileinput, glob;
-for filename in glob.glob("mbed-os/tools/profiles/*.json"):
-  for line in fileinput.input(filename, inplace=True):
-    print line.replace("\"-std=gnu++98\"","\"-std=c++11\", \"-fpermissive\"")'
-
 ```
 
 Finally, run the following command to compile:
