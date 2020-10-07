@@ -37,9 +37,15 @@ TARGET := $(HOST_OS)
 TARGET_ARCH := $(HOST_ARCH)
 
 # Default compiler and tool names:
-CXX_TOOL := g++
-CC_TOOL := gcc
-AR_TOOL := ar
+ifeq ($(filter armclang,$(TOOLCHAIN)),)
+	CXX_TOOL := armclang
+	CC_TOOL := armclang
+	AR_TOOL := armar
+else
+	CXX_TOOL := g++
+	CC_TOOL := gcc
+	AR_TOOL := ar
+endif
 
 # Specify TAGS on the command line to add a particular set of specialized
 # implementations, for example TAGS="CMSIS disco_f746ng" to target a Discovery
@@ -128,9 +134,15 @@ CCFLAGS  := \
 
 ARFLAGS := -r
 
-LDFLAGS += \
-  -Wl,--fatal-warnings \
-  -Wl,--gc-sections
+ifeq ($(filter armclang,$(TOOLCHAIN)),)
+  LDFLAGS += \
+    -Wl,--fatal-warnings \
+    -Wl,--gc-sections
+else
+  LDFLAGS += \
+    -Wl,--diag_error=warning \
+    -Wl,--remove
+endif
 
 # override these in the makefile.inc for specific compiler targets
 TARGET_TOOLCHAIN_PREFIX :=
