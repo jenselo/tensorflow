@@ -65,3 +65,6 @@ ETHOSU_MD5 := "0c148b90a1ee01de398892eb3a63e717"
 
 HIMAX_WE1_SDK_URL ="https://www.himax.com.tw/we-i/himax_we1_sdk_v04.zip"
 HIMAX_WE1_SDK_MD5 ="40b3ccb3c2e41210fe5c970d61e7e7d3"
+
+EVENTRECORDER_URL := "https://github.com/ARM-software/CMSIS-View/archive/main.zip"
+EVENTRECORDER_MD5 := "6c2962b82620d4d30e9822da70b215fc"
